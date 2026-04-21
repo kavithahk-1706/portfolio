@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kavitha Haima Kidambi — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-deep:     #0b0e14;
+      --bg-mid:      #111620;
+      --bg-card:     #161c28;
+      --cloud-1:     #1a2235;
+      --cloud-2:     #1e2d42;
+      --slate:       #4a6080;
+      --mist:        #7a93b0;
+      --pale:        #c8d6e8;
+      --bright:      #e8f0f8;
+      --accent:      #7ea8cc;
+      --accent-dim:  #3d6080;
+      --border:      rgba(122,147,176,0.15);
+      --glow:        rgba(126,168,204,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--pale);
+      font-family: 'Syne', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ── ANIMATED SKY BACKGROUND ── */
+    .sky {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 120% 60% at 30% 0%, rgba(30,45,66,0.9) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 50% at 80% 20%, rgba(26,34,53,0.8) 0%, transparent 50%),
+        radial-gradient(ellipse 100% 80% at 50% 100%, rgba(11,14,20,1) 0%, transparent 70%),
+        linear-gradient(175deg, #0d1420 0%, #111826 40%, #0b0e14 100%);
+      animation: skyshift 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes skyshift {
+      0%   { filter: brightness(1); }
+      50%  { filter: brightness(1.04) hue-rotate(3deg); }
+      100% { filter: brightness(0.97) hue-rotate(-3deg); }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(11,14,20,0.6);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--pale);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--mist);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--bright); }
+
+    /* ── SECTIONS ── */
+    section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 7rem 2rem;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 8rem;
+      padding-bottom: 4rem;
+      max-width: 1000px;
+    }
+
+    .hero-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 8vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--bright);
+      letter-spacing: -0.01em;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--mist);
+      max-width: 540px;
+      margin-bottom: 2.8rem;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.8rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent-dim);
+      color: var(--bright);
+      border: 1px solid var(--accent);
+    }
+    .btn-primary:hover {
+      background: var(--accent);
+      color: var(--bg-deep);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--mist);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover {
+      border-color: var(--mist);
+      color: var(--pale);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SECTION TITLES ── */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--bright);
+      margin-bottom: 3rem;
+      line-height: 1.1;
+    }
+
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--accent-dim);
+      margin: 1rem 0 2.5rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--mist);
+      margin-bottom: 1.2rem;
+      font-size: 0.95rem;
+    }
+
+    .about-text p strong {
+      color: var(--pale);
+      font-weight: 600;
+    }
+
+    .about-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .meta-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.4rem 1.6rem;
+    }
+
+    .meta-card h4 {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .meta-card p {
+      font-size: 0.9rem;
+      color: var(--pale);
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.8rem;
+    }
+
+    .skill-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.7rem 1rem;
+      font-size: 0.82rem;
+      color: var(--pale);
+      text-align: center;
+      letter-spacing: 0.05em;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .skill-pill:hover {
+      border-color: var(--accent-dim);
+      background: var(--cloud-1);
+    }
+
+    .skill-category {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin: 2rem 0 0.8rem;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem 2.2rem;
+      position: relative;
+      transition: border-color 0.25s, background 0.25s;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent-dim);
+      background: var(--cloud-1);
+    }
+
+    .project-card:hover::before { opacity: 1; }
+
+    .project-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .project-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--bright);
+      line-height: 1.1;
+    }
+
+    .project-badge {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .badge-hackathon {
+      background: rgba(126,168,204,0.12);
+      border: 1px solid var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .badge-lab {
+      background: rgba(74,96,128,0.15);
+      border: 1px solid var(--slate);
+      color: var(--mist);
+    }
+
+    .project-desc {
+      font-size: 0.92rem;
+      color: var(--mist);
+      margin-bottom: 1.4rem;
+      line-height: 1.75;
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .tech-tag {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.65rem;
+      background: rgba(74,96,128,0.2);
+      border: 1px solid rgba(74,96,128,0.4);
+      border-radius: 3px;
+      color: var(--pale);
+    }
+
+    .project-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .project-link {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+
+    .project-link:hover { color: var(--bright); }
+
+    .project-link svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* ── HOBBIES ── */
+    .hobbies-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .hobby-tag {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.85rem;
+      color: var(--mist);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hobby-tag span { font-size: 1rem; }
+
+    /* ── CONTACT ── */
+    .contact-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3rem;
+      text-align: center;
+    }
+
+    .contact-block p {
+      color: var(--mist);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.75rem;
+      color: var(--slate);
+      letter-spacing: 0.1em;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      section { padding: 5rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .project-header { flex-direction: column; align-items: flex-start; }
+      .contact-block { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sky"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-name" href="#hero">Kavitha Haima Kidambi</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://drive.google.com/file/d/1-xrddyM8yAJUb8il1B4Hqs4tq7yQwXzS/view?usp=sharing" target="_blank">Résumé ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-tag">Portfolio · AI/ML Engineer</p>
+  <h1 class="hero-name">Kavitha<br/><em>Haima Kidambi</em></h1>
+  <p class="hero-sub">
+    Second-year AI/ML student at Malla Reddy University. I build at the intersection of classical knowledge and modern systems — gesture interfaces for Carnatic music, productivity tools that pull from ancient scriptures, ML pipelines for real-world anomaly detection. I think about why something works, not just that it does.
+  </p>
+  <div class="hero-ctas">
+    <a href="#projects" class="btn btn-primary">View Projects</a>
+    <a href="https://github.com/kavithahk-1706" target="_blank" class="btn btn-ghost">GitHub ↗</a>
+    <a href="https://drive.google.com/file/d/1-xrddyM8yAJUb8il1B4Hqs4tq7yQwXzS/view?usp=sharing" target="_blank" class="btn btn-ghost">Résumé ↗</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <p class="section-label">About</p>
+    <h2 class="section-title">ML, classical knowledge, and the space between.</h2>
+    <div class="divider"></div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I'm a second-year B.Tech student in AI/ML at Malla Reddy University, Hyderabad. My projects tend to sit somewhere between computation and culture — I've built a touchless Carnatic music interface, an n8n pipeline that fetches content from ancient scriptures based on user sentiment, and an ML system for electricity theft detection that hits 99.8% precision.
+        </p>
+        <p>
+          I care about the theoretical and ethical dimensions of what I build. Not as an afterthought — it's usually where the interesting problem is. If AI is going to touch human knowledge and creativity, it should do that carefully.
+        </p>
+        <p>
+          Outside of code I play flute, piano, and guitar, sing, and am teaching myself music production. Most of my technical projects are secretly music projects in disguise.
+        </p>
+      </div>
+      <div class="about-meta">
+        <div class="meta-card">
+          <h4>Education</h4>
+          <p>B.Tech · Artificial Intelligence & Machine Learning<br/>Malla Reddy University, Hyderabad<br/>Graduating May 2028 · CGPA 9.34/10</p>
+        </div>
+        <div class="meta-card">
+          <h4>Relevant Coursework</h4>
+          <p>Machine Learning · Compiler Design · Computer Networks · OOSE · Linux Programming · Data Structures · AI (Game Theory, Expert Systems, Logic)</p>
+        </div>
+        <div class="meta-card">
+          <h4>Location</h4>
+          <p>Hyderabad, Telangana, India</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="reveal">
+    <p class="section-label">Skills</p>
+    <h2 class="section-title">What I work with.</h2>
+    <div class="divider"></div>
+
+    <p class="skill-category">Languages</p>
+    <div class="skills-grid">
+      <div class="skill-pill">Python</div>
+      <div class="skill-pill">JavaScript</div>
+      <div class="skill-pill">C++</div>
+      <div class="skill-pill">Java</div>
+      <div class="skill-pill">SQL</div>
+      <div class="skill-pill">HTML / CSS</div>
+    </div>
+
+    <p class="skill-category">Frameworks & Libraries</p>
+    <div class="skills-grid">
+      <div class="skill-pill">React.js</div>
+      <div class="skill-pill">Django</div>
+      <div class="skill-pill">Tailwind CSS</div>
+      <div class="skill-pill">scikit-learn</div>
+      <div class="skill-pill">Pandas</div>
+      <div class="skill-pill">MediaPipe</div>
+      <div class="skill-pill">Tone.js</div>
+    </div>
+
+    <p class="skill-category">Tools & Platforms</p>
+    <div class="skills-grid">
+      <div class="skill-pill">Git / GitHub</div>
+      <div class="skill-pill">Firebase</div>
+      <div class="skill-pill">MySQL</div>
+      <div class="skill-pill">n8n</div>
+      <div class="skill-pill">Vercel</div>
+      <div class="skill-pill">Upstash Redis</div>
+      <div class="skill-pill">Gemini API</div>
+    </div>
+
+    <p class="skill-category">Concepts</p>
+    <div class="skills-grid">
+      <div class="skill-pill">Machine Learning</div>
+      <div class="skill-pill">Interpretable AI</div>
+      <div class="skill-pill">Expert Systems</div>
+      <div class="skill-pill">Computer Vision</div>
+      <div class="skill-pill">Linux / IPC</div>
+      <div class="skill-pill">RESTful APIs</div>
+      <div class="skill-pill">Compiler Design</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="reveal">
+    <p class="section-label">Projects</p>
+    <h2 class="section-title">Things I've built.</h2>
+    <div class="divider"></div>
+
+    <div class="projects-list">
+
+      <!-- MudraLaya -->
+      <div class="project-card">
+        <div class="project-header">
+          <h3 class="project-name">MudraLaya</h3>
+          <span class="project-badge badge-lab">Live · HCI + Music</span>
+        </div>
+        <p class="project-desc">
+          A real-time, touchless Carnatic music interface that transforms hand gestures into musical notes across 11 ragas and 4 instrument timbres. Uses a rule-based expert system encoded in JSON to validate Swara transitions against classical raga structures — ensuring the output is musically coherent, not just sonically reactive.
+        </p>
+        <div class="tech-stack">
+          <span class="tech-tag">React</span>
+          <span class="tech-tag">MediaPipe Hands</span>
+          <span class="tech-tag">Tone.js</span>
+          <span class="tech-tag">Firebase</span>
+        </div>
+        <div class="project-links">
+          <a href="https://mudralaya.vercel.app/" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Live Demo
+          </a>
+          <a href="https://github.com/kavithahk-1706/mudralaya" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            View Repo
+          </a>
+        </div>
+      </div>
+
+      <!-- ML Energy Theft -->
+      <div class="project-card">
+        <div class="project-header">
+          <h3 class="project-name">ML Energy Theft Detection</h3>
+          <span class="project-badge badge-lab">ML · Complete</span>
+        </div>
+        <p class="project-desc">
+          Benchmarked multiple ML classification models — Random Forest, XGBoost, Decision Tree — to detect anomalies in electricity consumption data indicative of theft. Random Forest achieved 99.84% precision, 99.23% recall, and 99.54% F1-score on the test set. Currently extending to multi-class classification on imbalanced datasets and building a front-end analytics dashboard.
+        </p>
+        <div class="tech-stack">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">Pandas</span>
+          <span class="tech-tag">scikit-learn</span>
+          <span class="tech-tag">XGBoost</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/kavithahk-1706/ml_energy_theft_project_backend" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            Backend Repo
+          </a>
+          <a href="https://github.com/kavithahk-1706/ml_energy_theft_project_frontend" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            Frontend Repo
+          </a>
+        </div>
+      </div>
+
+      <!-- Antardarpana -->
+      <div class="project-card">
+        <div class="project-header">
+          <h3 class="project-name">Antardarpana</h3>
+          <span class="project-badge badge-lab">Automation · In Progress</span>
+        </div>
+        <p class="project-desc">
+          An automated self-reflection and productivity tracker that logs daily tasks and analyses patterns via LLMs. Includes a web-scraping module that fetches contextually relevant content from ancient scriptures based on user sentiment analysis. Visualisation dashboard tracks consistency metrics and surfaces actionable feedback loops. V2.0 in progress.
+        </p>
+        <div class="tech-stack">
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">n8n</span>
+          <span class="tech-tag">LLM APIs</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/kavithahk-1706/antardarpana" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            View Repo
+          </a>
+        </div>
+      </div>
+
+      <!-- Django Music Store -->
+      <div class="project-card">
+        <div class="project-header">
+          <h3 class="project-name">Full-Stack Music Store</h3>
+          <span class="project-badge badge-lab">Full-Stack</span>
+        </div>
+        <p class="project-desc">
+          A full-stack e-commerce platform with secure user authentication, product catalog management, and a shopping cart system. RESTful API endpoints handle frontend-backend data flow, backed by a relational MySQL schema for order processing.
+        </p>
+        <div class="tech-stack">
+          <span class="tech-tag">Django</span>
+          <span class="tech-tag">MySQL</span>
+          <span class="tech-tag">HTML / CSS</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/kavithahk-1706/django_music_store" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            View Repo
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOBBIES -->
+<section id="hobbies" style="padding-top: 0;">
+  <div class="reveal">
+    <p class="section-label">Beyond Code</p>
+    <h2 class="section-title">A few other things.</h2>
+    <div class="divider"></div>
+    <div class="hobbies-row">
+      <div class="hobby-tag"><span>🎵</span> Flute</div>
+      <div class="hobby-tag"><span>🎹</span> Piano</div>
+      <div class="hobby-tag"><span>🎸</span> Guitar</div>
+      <div class="hobby-tag"><span>🎛️</span> Music Production</div>
+      <div class="hobby-tag"><span>📖</span> Classical Literature</div>
+      <div class="hobby-tag"><span>🔭</span> Philosophy of Technology</div>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements" style="padding-top: 0;">
+  <div class="reveal">
+    <p class="section-label">Recognition</p>
+    <h2 class="section-title">Certifications & achievements.</h2>
+    <div class="divider"></div>
+    <div class="skills-grid">
+      <div class="skill-pill" style="text-align:left; padding: 1rem 1.2rem;">
+        <div style="font-size:0.7rem; color: var(--accent); letter-spacing:0.1em; margin-bottom:0.3rem;">NPTEL · IIT Kharagpur</div>
+        Elite Certification — OS Fundamentals
+      </div>
+      <div class="skill-pill" style="text-align:left; padding: 1rem 1.2rem;">
+        <div style="font-size:0.7rem; color: var(--accent); letter-spacing:0.1em; margin-bottom:0.3rem;">Algo Arena 2026 · MRUH</div>
+        3rd Place — Alan Turing Club
+      </div>
+      <div class="skill-pill" style="text-align:left; padding: 1rem 1.2rem;">
+        <div style="font-size:0.7rem; color: var(--accent); letter-spacing:0.1em; margin-bottom:0.3rem;">Tech Expo · MRUH</div>
+        3rd Place
+      </div>
+      <div class="skill-pill" style="text-align:left; padding: 1rem 1.2rem;">
+        <div style="font-size:0.7rem; color: var(--accent); letter-spacing:0.1em; margin-bottom:0.3rem;">DevOps Workshop · GeeksforGeeks × MRUH</div>
+        Top Performer
+      </div>
+    </div>
+  </div>
+</section>
+<section id="contact">
+  <div class="reveal">
+    <p class="section-label">Contact</p>
+    <h2 class="section-title">Let's connect.</h2>
+    <div class="divider"></div>
+    <div class="contact-block">
+      <p>
+        If something here catches your eye, my inbox is open.
+      </p>
+      <div class="contact-links">
+        <a href="https://github.com/kavithahk-1706" target="_blank" class="btn btn-primary">GitHub ↗</a>
+        <a href="https://linkedin.com/in/kavitha-haima-kidambi" target="_blank" class="btn btn-ghost">LinkedIn ↗</a>
+        <a href="mailto:kavithahaimakidambi0613@gmail.com" class="btn btn-ghost">Email</a>
+        <a href="https://drive.google.com/file/d/1-xrddyM8yAJUb8il1B4Hqs4tq7yQwXzS/view?usp=sharing" target="_blank" class="btn btn-ghost">Résumé ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Kavitha Haima Kidambi</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
